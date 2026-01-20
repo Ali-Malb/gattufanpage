@@ -8,130 +8,338 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        /* --- STYLES --- */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; color: #333; margin: 0; padding: 0; user-select: none; }
-        .nav-bar { background-color: #e91e63; padding: 15px; display: flex; justify-content: center; gap: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .nav-btn { background: transparent; border: 2px solid rgba(255,255,255,0.5); color: white; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
-        .nav-btn:hover { background: rgba(255,255,255,0.1); }
-        .nav-btn.active { background: white; color: #e91e63; border-color: white; }
-        
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; display: none; }
-        .container.active-view { display: block; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; }
-        
-        /* Game Styles */
-        .clicker-btn { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #ff80ab 0%, #f50057 100%); border: 5px solid white; box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4); color: white; font-size: 40px; cursor: pointer; transition: transform 0.1s; }
+        /* --- GLOBAL STYLES --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fce4ec; /* Light pink */
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            user-select: none; 
+            text-align: center;
+        }
+
+        header {
+            background-color: #e91e63;
+            color: white;
+            padding: 30px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 { margin: 0; font-size: 2.5em; }
+        h2 { color: #880e4f; }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+        }
+
+        /* --- SECTIONS (CARDS) --- */
+        .section-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 2px solid white;
+        }
+
+        /* --- LOVE BUTTON SECTION --- */
+        .gattu-img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            border: 5px solid #ffc1e3;
+            margin-bottom: 20px;
+        }
+
+        .love-btn {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        .love-btn:hover { background-color: #d81b60; transform: scale(1.05); }
+        .love-btn:active { transform: scale(0.95); }
+        .love-btn:disabled { background-color: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* --- GAME SECTION --- */
+        .game-title {
+            border-top: 2px dashed #ff80ab;
+            padding-top: 30px;
+            margin-top: 10px;
+        }
+
+        .score-display {
+            font-size: 3em;
+            font-weight: bold;
+            color: #d81b60;
+            margin: 10px 0;
+        }
+
+        .clicker-btn { 
+            width: 150px; height: 150px; 
+            border-radius: 50%; 
+            background: radial-gradient(circle, #ff80ab 0%, #f50057 100%); 
+            border: 5px solid white; 
+            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4); 
+            color: white; font-size: 40px; 
+            cursor: pointer; transition: transform 0.1s; 
+        }
         .clicker-btn:active { transform: scale(0.9); }
-        
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .shop-item { background: #fff0f5; padding: 15px; border-radius: 15px; border: 1px solid #ffc1e3; cursor: pointer; transition: transform 0.1s; }
+
+        /* SHOP */
+        .shop-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+        .shop-item { 
+            background: #fff0f5; 
+            padding: 15px; 
+            border-radius: 15px; 
+            border: 1px solid #ffc1e3; 
+            cursor: pointer; 
+            transition: transform 0.1s; 
+        }
         .shop-item:hover { transform: translateY(-3px); border-color: #f50057; }
         .shop-item.disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(1); }
-        
-        /* Leaderboard Table */
+
+        /* GLOBAL RANKING BOX */
+        .upload-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid #90caf9;
+        }
+
+        /* TABLE */
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th { background: #fce4ec; color: #880e4f; padding: 10px; }
         td { padding: 10px; border-bottom: 1px solid #eee; }
-        
-        /* Inputs */
-        input, textarea { width: 70%; padding: 10px; margin: 10px 0; border: 2px solid #ffc1e3; border-radius: 10px; font-family: inherit; }
-        .action-btn { background-color: #ff4081; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .action-btn:hover { background-color: #d81b60; }
-        .action-btn:disabled { background-color: #ccc; }
+
+        /* INPUTS */
+        input { 
+            padding: 10px; 
+            border: 2px solid #ddd; 
+            border-radius: 5px; 
+            width: 60%; 
+            text-align: center;
+        }
+        .action-btn { 
+            background-color: #2196F3; 
+            color: white; border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="nav-bar">
-        <button class="nav-btn active" onclick="switchTab('letter')">💌 Send Letter</button>
-        <button class="nav-btn" onclick="switchTab('game')">🎮 Global Clicker</button>
-    </div>
+    <header>
+        <h1>🌟 The Official Gattu Fan Club 🌟</h1>
+        <p>Dedicated to the legend himself.</p>
+    </header>
 
-    <div id="view-letter" class="container active-view">
-        <div class="card">
-            <h2>Send a Love Letter to Gattu</h2>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6RZlboeF2Q-nIeNB-U1s88DFOmsVlCo3W0w&s" style="width: 200px; border-radius: 10px; margin-bottom: 20px;">
-            <p>Write something nice below. Gattu will receive it via email!</p>
-            <input type="text" id="letter-name" placeholder="Your Name">
-            <textarea id="letter-msg" rows="4" placeholder="Your Message..."></textarea>
+    <div class="container">
+        
+        <div class="section-card">
+            <h2>Show Your Support</h2>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6RZlboeF2Q-nIeNB-U1s88DFOmsVlCo3W0w&s" class="gattu-img" alt="Gattu">
             <br>
-            <button class="action-btn" id="letter-btn" onclick="sendLetter()">Send Letter 🚀</button>
-            <p id="letter-status" style="margin-top: 10px; color: #666;"></p>
+            <p>Click the button below to send virtual love to Gattu!</p>
+            
+            <button class="love-btn" id="love-btn" onclick="sendLove()">
+                ❤️ Send Love
+            </button>
+            <div id="love-status" style="margin-top: 15px; font-weight: bold; color: #880e4f;"></div>
         </div>
-    </div>
 
-    <div id="view-game" class="container">
-        <div class="card">
-            <h2 style="margin:0;">❤️ <span id="score">0</span></h2>
-            <div style="font-size: 0.8em; color: #888; margin-bottom: 20px;">(<span id="gps">0</span> / sec)</div>
+        <div class="section-card">
+            <h2 class="game-title">🎮 Global Fan Clicker</h2>
+            <p>Collect hearts and compete with fans worldwide!</p>
             
-            <button class="clicker-btn" onclick="clickHeart()">❤️</button>
-            
-            <div style="margin-top: 20px; padding: 15px; background: #fff8fb; border-radius: 10px;">
-                <h4>🌍 Global Ranking</h4>
-                <p style="font-size: 0.8em; color: #666;">Click "Upload" to show your score to the world!</p>
-                <input type="text" id="gamer-name" placeholder="Enter Name">
-                <br>
-                <button class="action-btn" onclick="window.pushScoreToFirebase()"> Upload Score </button>
-                <p id="upload-status" style="font-size: 12px; color: #666; margin-top:5px;"></p>
+            <div class="score-display">
+                ❤️ <span id="score">0</span>
             </div>
-        </div>
+            <div style="color: #888; margin-bottom: 20px;">
+                (<span id="gps">0</span> hearts / sec)
+            </div>
 
-        <div class="card">
-            <h3>🛒 Item Shop</h3>
+            <button class="clicker-btn" onclick="clickHeart()">❤️</button>
+
+            <h3 style="margin-top: 40px;">🛒 Upgrade Shop</h3>
             <div id="shop" class="shop-grid"></div>
-        </div>
 
-        <div class="card">
-            <h3>🏆 World Leaderboard</h3>
-            <button onclick="window.fetchLeaderboard()" style="font-size: 12px; cursor: pointer; background:none; border:none; color:blue; text-decoration:underline;">Refresh Board</button>
+            <div class="upload-box">
+                <h3>🌍 Join the Global Leaderboard</h3>
+                <input type="text" id="gamer-name" placeholder="Enter Your Name">
+                <br>
+                <button class="action-btn" onclick="window.pushScoreToFirebase()">
+                    Upload Score to World Database
+                </button>
+                <p id="upload-status" style="font-size: 14px; color: #555; margin-top:5px;"></p>
+            </div>
+
+            <h3>🏆 World Top 10</h3>
+            <button onclick="window.fetchLeaderboard()" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">Refresh Board</button>
+            
             <table>
                 <thead><tr><th>Rank</th><th>Name</th><th>Score</th></tr></thead>
-                <tbody id="leaderboard-body"><tr><td colspan="3">Loading World Scores...</td></tr></tbody>
+                <tbody id="leaderboard-body"><tr><td colspan="3">Loading...</td></tr></tbody>
             </table>
         </div>
+
     </div>
 
     <script>
-        // --- EMAIL JS KEYS ---
+        // --- KEYS ---
         const EMAIL_SERVICE_ID = 'service_11ijhua';
         const EMAIL_TEMPLATE_ID = 'template_mwe3jti';
         const EMAIL_PUBLIC_KEY = 'iwl1W3R_eIaaqB7RR';
 
-        // --- NAVIGATION ---
-        function switchTab(tabName) {
-            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-view'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`view-${tabName}`).classList.add('active-view');
-            const btnIndex = tabName === 'letter' ? 0 : 1;
-            document.querySelectorAll('.nav-btn')[btnIndex].classList.add('active');
-            
-            if(tabName === 'game' && window.fetchLeaderboard) window.fetchLeaderboard();
-        }
+        // --- 1. SEND LOVE FUNCTION (FIXED EMAIL) ---
+        function sendLove() {
+            const btn = document.getElementById('love-btn');
+            const status = document.getElementById('love-status');
 
-        // --- EMAIL LOGIC ---
-        function sendLetter() {
-            const name = document.getElementById('letter-name').value || "Anonymous";
-            const msg = document.getElementById('letter-msg').value;
-            const btn = document.getElementById('letter-btn');
-            const status = document.getElementById('letter-status');
+            btn.disabled = true; 
+            status.innerText = "❤️ Sending...";
+            btn.innerText = "Sending...";
 
-            if(!msg) { alert("Please write a message!"); return; }
-            btn.disabled = true; status.innerText = "Sending...";
-
+            // Sending a generic "Love Sent" message
             emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, {
                 to_name: 'Gattu',
-                message: `LETTER FROM ${name}: ${msg}`
+                message: 'Someone clicked the Send Love button on your fan page!'
             }, EMAIL_PUBLIC_KEY).then(() => {
-                status.innerText = "✅ Sent successfully!";
-                btn.innerText = "Sent!";
+                status.innerText = "✅ Love Sent to Gattu via Email!";
+                btn.innerText = "Sent! ❤️";
             }, (err) => {
-                status.innerText = "❌ Failed.";
+                status.innerText = "❌ Email failed, but the love is real!";
                 btn.disabled = false;
+                btn.innerText = "Try Again";
             });
         }
 
-        // --- CLICKER GAME LOGIC ---
+        // --- 2. GAME LOGIC ---
         let game = { score: 0, gps: 0, clickPower: 1, items: [
             { id: 0, name: "Gattu's Vocab", cost: 50, rate: 0, clickBoost: 5, desc: "+5 per click", count: 0 },
-            { id: 1, name: "Gattu's Notebook", cost: 100, rate: 2, clickBoost: 0,
+            { id: 1, name: "Gattu's Notebook", cost: 100, rate: 2, clickBoost: 0, desc: "+2 / sec", count: 0 },
+            { id: 2, name: "Gattu's Dog", cost: 500, rate: 15, clickBoost: 0, desc: "+15 / sec", count: 0 },
+            { id: 3, name: "Gaming Setup", cost: 2000, rate: 50, clickBoost: 0, desc: "+50 / sec", count: 0 },
+            { id: 4, name: "Gattu's Car", cost: 10000, rate: 250, clickBoost: 0, desc: "+250 / sec", count: 0 }
+        ]};
+
+        // Load Save
+        if(localStorage.getItem('gattuGameData')) game = JSON.parse(localStorage.getItem('gattuGameData'));
+        if(localStorage.getItem('gattuUserName')) document.getElementById('gamer-name').value = localStorage.getItem('gattuUserName');
+
+        function renderShop() {
+            const shopDiv = document.getElementById('shop');
+            shopDiv.innerHTML = "";
+            game.items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = `shop-item ${game.score < item.cost ? 'disabled' : ''}`;
+                el.onclick = () => buyItem(item.id);
+                el.innerHTML = `<strong>${item.name}</strong> (${item.count})<br><span style="color:#d81b60">💰 ${item.cost.toLocaleString()}</span><br><small>${item.desc}</small>`;
+                shopDiv.appendChild(el);
+            });
+            document.getElementById('score').innerText = Math.floor(game.score).toLocaleString();
+            document.getElementById('gps').innerText = game.gps;
+        }
+
+        function clickHeart() { game.score += game.clickPower; renderShop(); }
+        
+        function buyItem(id) {
+            const item = game.items[id];
+            if(game.score >= item.cost) {
+                game.score -= item.cost; item.count++; item.cost = Math.ceil(item.cost * 1.5);
+                if(item.clickBoost > 0) game.clickPower += item.clickBoost;
+                if(item.rate > 0) game.gps += item.rate;
+                localStorage.setItem('gattuGameData', JSON.stringify(game));
+                renderShop();
+            }
+        }
+
+        setInterval(() => { if(game.gps > 0) { game.score += (game.gps / 10); renderShop(); } }, 100);
+        setInterval(() => { localStorage.setItem('gattuGameData', JSON.stringify(game)); }, 5000);
+        renderShop();
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp } 
+        from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBHq9QOKiG_twwGtdZsnO1-grHWh2FXuVk",
+            authDomain: "gattufanpage.firebaseapp.com",
+            projectId: "gattufanpage",
+            storageBucket: "gattufanpage.firebasestorage.app",
+            messagingSenderId: "1000778970327",
+            appId: "1:1000778970327:web:17a0f327f76129c2662c92"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make functions globally available to HTML buttons
+        window.pushScoreToFirebase = async function() {
+            const name = document.getElementById('gamer-name').value;
+            const status = document.getElementById('upload-status');
+            
+            if(!name) { alert("Please enter your name!"); return; }
+            localStorage.setItem('gattuUserName', name);
+            
+            status.innerText = "Uploading...";
+            
+            try {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: name,
+                    score: Math.floor(game.score),
+                    timestamp: serverTimestamp()
+                });
+                status.innerText = "✅ Success! Board updating...";
+                window.fetchLeaderboard();
+            } catch (error) {
+                console.error("Error:", error);
+                status.innerText = "❌ Error: " + error.message;
+            }
+        }
+
+        window.fetchLeaderboard = async function() {
+            const tbody = document.getElementById('leaderboard-body');
+            try {
+                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(10));
+                const querySnapshot = await getDocs(q);
+                
+                tbody.innerHTML = "";
+                let rank = 1;
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    tbody.innerHTML += `<tr><td>#${rank++}</td><td>${data.name}</td><td>${data.score.toLocaleString()}</td></tr>`;
+                });
+            } catch (error) {
+                console.error("Error:", error);
+                tbody.innerHTML = `<tr><td colspan="3">Loading failed.</td></tr>`;
+            }
+        }
+        
+        // Initial load
+        window.fetchLeaderboard();
+    </script>
+
+</body>
+</html>
