@@ -6,163 +6,136 @@
     <title>Gattu's Global Fan Page</title>
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
         /* --- GLOBAL STYLES --- */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #fce4ec; /* Light pink */
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); 
             color: #333; 
-            margin: 0; 
-            padding: 0; 
-            user-select: none; 
-            text-align: center;
+            margin: 0; padding: 0; 
+            user-select: none; text-align: center;
+            min-height: 100vh;
         }
 
         header {
-            background-color: #e91e63;
-            color: white;
-            padding: 30px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: linear-gradient(45deg, #e91e63, #ff4081);
+            color: white; padding: 40px 0;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
             margin-bottom: 30px;
+            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
         }
 
-        h1 { margin: 0; font-size: 2.5em; }
-        h2 { color: #880e4f; }
+        h1 { margin: 0; font-family: 'Fredoka One', cursive; font-size: 3em; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
+        h2 { color: #880e4f; font-weight: 600; }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px 50px 20px;
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px 50px 20px; }
 
-        /* --- SECTIONS (CARDS) --- */
+        /* --- CARDS --- */
         .section-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
-            border: 2px solid white;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px; border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
         }
 
-        /* --- LOVE BUTTON SECTION --- */
+        /* --- LOVE BUTTON --- */
         .gattu-img {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 15px;
-            border: 5px solid #ffc1e3;
-            margin-bottom: 20px;
+            width: 100%; max-width: 250px; border-radius: 20px;
+            border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px; transition: transform 0.3s;
         }
+        .gattu-img:hover { transform: scale(1.02) rotate(1deg); }
 
         .love-btn {
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            padding: 20px 50px;
-            font-size: 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+            background: linear-gradient(45deg, #ff4081, #f50057);
+            color: white; border: none; padding: 15px 40px;
+            font-size: 20px; font-weight: bold; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 5px 20px rgba(245, 0, 87, 0.4);
+            transition: all 0.2s;
         }
+        .love-btn:hover { transform: scale(1.05); }
+        .love-btn:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
 
-        .love-btn:hover { background-color: #d81b60; transform: scale(1.05); }
-        .love-btn:active { transform: scale(0.95); }
-        .love-btn:disabled { background-color: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
-
-        /* --- GAME SECTION --- */
-        .game-title {
-            border-top: 2px dashed #ff80ab;
-            padding-top: 30px;
-            margin-top: 10px;
-        }
-
+        /* --- GAME --- */
         .score-display {
-            font-size: 3em;
-            font-weight: bold;
-            color: #d81b60;
-            margin: 10px 0;
+            font-family: 'Fredoka One', cursive; font-size: 3.5em;
+            color: #d81b60; margin: 10px 0;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
         }
 
         .clicker-btn { 
-            width: 150px; height: 150px; 
-            border-radius: 50%; 
-            background: radial-gradient(circle, #ff80ab 0%, #f50057 100%); 
-            border: 5px solid white; 
-            box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4); 
-            color: white; font-size: 40px; 
-            cursor: pointer; transition: transform 0.1s; 
+            width: 160px; height: 160px; border-radius: 50%; 
+            background: radial-gradient(circle at 30% 30%, #ff80ab 0%, #d81b60 100%);
+            border: 6px solid white; box-shadow: 0 10px 30px rgba(216, 27, 96, 0.5); 
+            color: white; font-size: 50px; cursor: pointer; 
+            transition: transform 0.05s; animation: pulse 2s infinite;
         }
-        .clicker-btn:active { transform: scale(0.9); }
+        .clicker-btn:active { transform: scale(0.9) !important; animation: none; }
+
+        /* GOLDEN HEART EVENT */
+        #golden-heart {
+            position: absolute; width: 60px; height: 60px;
+            background: radial-gradient(circle, #ffd700, #ff8c00);
+            border: 3px solid #fff; border-radius: 50%;
+            display: none; cursor: pointer;
+            box-shadow: 0 0 20px #ffd700;
+            animation: floatGold 3s infinite;
+            z-index: 10; font-size: 30px; line-height: 55px;
+        }
+        @keyframes floatGold { 0%,100% {transform:translateY(0)} 50% {transform:translateY(-10px)} }
+
+        /* ACHIEVEMENTS */
+        .achievements-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px; margin-top: 20px;
+        }
+        .badge {
+            background: #eee; padding: 10px; border-radius: 10px;
+            font-size: 0.8em; color: #888; border: 2px solid #ddd;
+            transition: all 0.3s;
+        }
+        .badge.unlocked {
+            background: #fff9c4; border-color: #fbc02d; color: #f57f17;
+            font-weight: bold; transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(251, 192, 45, 0.3);
+        }
 
         /* SHOP */
-        .shop-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 15px; 
-            margin-top: 20px; 
-        }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 25px; }
         .shop-item { 
-            background: #fff0f5; 
-            padding: 15px; 
-            border-radius: 15px; 
-            border: 2px solid #ffc1e3; 
-            cursor: pointer; 
-            transition: transform 0.1s, border-color 0.1s; 
-            /* Fix for spasing: Enforce height stability */
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            background: white; padding: 15px; border-radius: 15px; 
+            border: 2px solid #f8bbd0; cursor: pointer; min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center; transition: all 0.2s;
         }
-        .shop-item:hover { transform: translateY(-3px); border-color: #f50057; }
-        
-        /* Disabled state */
-        .shop-item.disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed; 
-            filter: grayscale(1); 
-            transform: none !important; /* Stop movement if disabled */
-        }
+        .shop-item:hover { transform: translateY(-3px); border-color: #e91e63; }
+        .shop-item.disabled { opacity: 0.5; cursor: not-allowed; background: #f5f5f5; filter: grayscale(1); }
 
-        /* GLOBAL RANKING BOX */
-        .upload-box {
-            background: #e3f2fd;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
-            border: 1px solid #90caf9;
-        }
+        /* LEADERBOARD */
+        .upload-box { background: #e1f5fe; padding: 25px; border-radius: 20px; margin-top: 40px; border: 2px solid #b3e5fc; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 15px; }
+        th { color: #880e4f; padding: 10px; font-weight: 600; }
+        td { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* TABLE */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { background: #fce4ec; color: #880e4f; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #eee; }
+        /* FLOATING TEXT */
+        .floating-text {
+            position: absolute; color: #d81b60; font-weight: bold; font-size: 24px;
+            pointer-events: none; animation: floatUp 1s forwards;
+        }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
 
         /* INPUTS */
-        input { 
-            padding: 10px; 
-            border: 2px solid #ddd; 
-            border-radius: 5px; 
-            width: 60%; 
-            text-align: center;
-        }
-        .action-btn { 
-            background-color: #2196F3; 
-            color: white; border: none; 
-            padding: 10px 20px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            margin-top: 10px;
-        }
+        input { padding: 12px; border: 2px solid #ddd; border-radius: 8px; width: 70%; text-align: center; font-family: 'Poppins', sans-serif; }
+        .action-btn { background-color: #2196F3; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🌟 The Official Gattu Fan Club 🌟</h1>
-        <p>Dedicated to the legend himself.</p>
+        <h1>🌟 The Gattu Fan Club 🌟</h1>
     </header>
 
     <div class="container">
@@ -170,188 +143,241 @@
         <div class="section-card">
             <h2>Show Your Support</h2>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6RZlboeF2Q-nIeNB-U1s88DFOmsVlCo3W0w&s" class="gattu-img" alt="Gattu">
-            <br>
-            <p>Click the button below to send virtual love to Gattu!</p>
-            
-            <button class="love-btn" id="love-btn" onclick="sendLove()">
-                ❤️ Send Love
-            </button>
-            <div id="love-status" style="margin-top: 15px; font-weight: bold; color: #880e4f;"></div>
+            <p>Send a "Love Letter" to Gattu!</p>
+            <button class="love-btn" id="love-btn" onclick="sendLove()">❤️ Send Love</button>
+            <div id="love-status" style="margin-top: 15px; font-weight: 600; color: #880e4f;"></div>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" id="game-area">
             <h2 class="game-title">🎮 Global Fan Clicker</h2>
-            <p>Collect hearts and compete with fans worldwide!</p>
             
-            <div class="score-display">
-                ❤️ <span id="score">0</span>
-            </div>
-            <div style="color: #888; margin-bottom: 20px;">
-                (<span id="gps">0</span> hearts / sec)
+            <div id="golden-heart" onclick="clickGoldenHeart(event)">💛</div>
+
+            <div class="score-display">❤️ <span id="score">0</span></div>
+            <div style="color: #666; font-size: 0.9em; margin-bottom: 25px;">
+                Generating <span id="gps" style="font-weight:bold; color:#d81b60;">0</span> / sec
             </div>
 
-            <button class="clicker-btn" onclick="clickHeart()">❤️</button>
+            <button class="clicker-btn" onclick="clickHeart(event)">❤️</button>
 
-            <h3 style="margin-top: 40px;">🛒 Upgrade Shop</h3>
+            <h3 style="margin-top: 40px; text-align: left;">🏆 Trophy Case</h3>
+            <div id="achievements" class="achievements-grid"></div>
+
+            <h3 style="margin-top: 30px; text-align: left;">🛒 Upgrade Shop</h3>
             <div id="shop" class="shop-grid"></div>
 
             <div class="upload-box">
-                <h3>🌍 Join the Global Leaderboard</h3>
-                <input type="text" id="gamer-name" placeholder="Enter Your Name">
+                <h3>🌍 Global Leaderboard</h3>
+                <p style="font-size: 0.85em; color: #555;">Anti-Spam Active: One score entry per device.</p>
+                <input type="text" id="gamer-name" placeholder="Enter Your Username">
                 <br>
-                <button class="action-btn" onclick="window.pushScoreToFirebase()">
-                    Upload Score to World Database
+                <button id="upload-btn" class="action-btn" onclick="window.pushScoreToFirebase()">
+                    Update My Rank
                 </button>
-                <p id="upload-status" style="font-size: 14px; color: #555; margin-top:5px;"></p>
+                <p id="upload-status" style="font-size: 14px; color: #555; margin-top:10px;"></p>
             </div>
 
-            <h3>🏆 World Top 10</h3>
-            <button onclick="window.fetchLeaderboard()" style="background:none; border:none; color:blue; cursor:pointer; text-decoration:underline;">Refresh Board</button>
-            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
+                <h3>Top 10 Fans</h3>
+                <button onclick="window.fetchLeaderboard()" style="background:none; border:none; color:#2196F3; cursor:pointer; font-weight:600;">↻ Refresh</button>
+            </div>
             <table>
-                <thead><tr><th>Rank</th><th>Name</th><th>Score</th></tr></thead>
+                <thead><tr><th>Rank</th><th>Fan</th><th>Score</th></tr></thead>
                 <tbody id="leaderboard-body"><tr><td colspan="3">Loading...</td></tr></tbody>
             </table>
         </div>
-
     </div>
 
     <script>
-        // --- KEYS ---
+        // --- EMAILJS KEYS ---
         const EMAIL_SERVICE_ID = 'service_11ijhua';
         const EMAIL_TEMPLATE_ID = 'template_mwe3jti';
         const EMAIL_PUBLIC_KEY = 'iwl1W3R_eIaaqB7RR';
 
-        // --- 1. SEND LOVE FUNCTION ---
-        function sendLove() {
-            const btn = document.getElementById('love-btn');
-            const status = document.getElementById('love-status');
-
-            btn.disabled = true; 
-            status.innerText = "❤️ Sending...";
-            btn.innerText = "Sending...";
-
-            emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, {
-                to_name: 'Gattu',
-                message: 'Someone clicked the Send Love button on your fan page!'
-            }, EMAIL_PUBLIC_KEY).then(() => {
-                status.innerText = "✅ Love Sent to Gattu via Email!";
-                btn.innerText = "Sent! ❤️";
-            }, (err) => {
-                status.innerText = "❌ Email failed (Quota exceeded or Network error)";
-                console.error(err);
-                btn.disabled = false;
-                btn.innerText = "Try Again";
-            });
+        // --- UNIQUE DEVICE ID (Anti-Spam) ---
+        let deviceID = localStorage.getItem('gattu_device_id');
+        if (!deviceID) {
+            deviceID = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('gattu_device_id', deviceID);
         }
 
-        // --- 2. GAME LOGIC ---
-        let game = { score: 0, gps: 0, clickPower: 1, items: [
-            { id: 0, name: "Gattu's Vocab", cost: 50, rate: 0, clickBoost: 5, desc: "+5 per click", count: 0 },
-            { id: 1, name: "Gattu's Notebook", cost: 100, rate: 2, clickBoost: 0, desc: "+2 / sec", count: 0 },
-            { id: 2, name: "Gattu's Dog", cost: 500, rate: 15, clickBoost: 0, desc: "+15 / sec", count: 0 },
-            { id: 3, name: "Gaming Setup", cost: 2000, rate: 50, clickBoost: 0, desc: "+50 / sec", count: 0 },
-            { id: 4, name: "Gattu's Car", cost: 10000, rate: 250, clickBoost: 0, desc: "+250 / sec", count: 0 }
-        ]};
+        // --- GAME DATA ---
+        let game = { 
+            score: 0, 
+            gps: 0, 
+            clickPower: 1, 
+            items: [
+                { id: 0, name: "Gattu's Vocab", cost: 50, rate: 0, clickBoost: 5, desc: "+5 per click", count: 0 },
+                { id: 1, name: "Gattu's Notebook", cost: 100, rate: 2, clickBoost: 0, desc: "+2 / sec", count: 0 },
+                { id: 2, name: "Gattu's Dog", cost: 500, rate: 15, clickBoost: 0, desc: "+15 / sec", count: 0 },
+                { id: 3, name: "Gaming Setup", cost: 2000, rate: 50, clickBoost: 0, desc: "+50 / sec", count: 0 },
+                { id: 4, name: "Gattu's Car", cost: 10000, rate: 250, clickBoost: 0, desc: "+250 / sec", count: 0 }
+            ],
+            achievements: [
+                { id: 'first_100', name: 'Starter Fan', req: 100, earned: false },
+                { id: '1k_club', name: '1K Club', req: 1000, earned: false },
+                { id: 'car_owner', name: 'Car Owner', req: 'item_4', earned: false },
+                { id: 'big_100k', name: 'Super Fan', req: 100000, earned: false }
+            ]
+        };
 
         // Load Save
-        if(localStorage.getItem('gattuGameData')) game = JSON.parse(localStorage.getItem('gattuGameData'));
+        if(localStorage.getItem('gattuGameData')) {
+            let saved = JSON.parse(localStorage.getItem('gattuGameData'));
+            game = { ...game, ...saved }; // Merge to keep new achievements if updated
+        }
         if(localStorage.getItem('gattuUserName')) document.getElementById('gamer-name').value = localStorage.getItem('gattuUserName');
 
-        // --- FIX: INITIALIZE SHOP (Run ONCE) ---
-        function initShop() {
+        // --- RENDER FUNCTIONS ---
+        function initUI() {
+            // Shop
             const shopDiv = document.getElementById('shop');
-            shopDiv.innerHTML = ""; // Clear existing
-            
+            shopDiv.innerHTML = "";
             game.items.forEach(item => {
-                // Create the DIV
                 const el = document.createElement('div');
                 el.className = 'shop-item';
-                el.id = `item-box-${item.id}`; // Give it a stable ID
+                el.id = `item-box-${item.id}`;
                 el.onclick = () => buyItem(item.id);
-                
-                // Set the internal HTML
                 el.innerHTML = `
-                    <strong id="name-${item.id}">${item.name}</strong> 
-                    <span id="count-${item.id}">(${item.count})</span>
-                    <br>
-                    <span style="color:#d81b60">💰 <span id="cost-${item.id}">${item.cost.toLocaleString()}</span></span>
-                    <br>
-                    <small>${item.desc}</small>
+                    <div style="font-weight: bold;">${item.name}</div>
+                    <div style="color: #666; font-size: 0.9em;">Owned: <span id="count-${item.id}">${item.count}</span></div>
+                    <div style="color: #d81b60; font-weight:bold;">💰 <span id="cost-${item.id}">${item.cost.toLocaleString()}</span></div>
                 `;
                 shopDiv.appendChild(el);
             });
-            updateShopUI(); // Set initial disabled states
+
+            // Achievements
+            const achDiv = document.getElementById('achievements');
+            achDiv.innerHTML = "";
+            game.achievements.forEach(ach => {
+                const badge = document.createElement('div');
+                badge.className = `badge ${ach.earned ? 'unlocked' : ''}`;
+                badge.id = `badge-${ach.id}`;
+                badge.innerText = ach.earned ? `🏆 ${ach.name}` : `🔒 ???`;
+                badge.title = ach.earned ? "Unlocked!" : "Keep playing to unlock";
+                achDiv.appendChild(badge);
+            });
+            
+            updateUI();
         }
 
-        // --- FIX: UPDATE SHOP (Run OFTEN) ---
-        function updateShopUI() {
-            // Update Score Text
+        function updateUI() {
             document.getElementById('score').innerText = Math.floor(game.score).toLocaleString();
             document.getElementById('gps').innerText = game.gps;
-
-            // Update Buttons (Enable/Disable/Text)
+            
+            // Update Shop Buttons
             game.items.forEach(item => {
                 const box = document.getElementById(`item-box-${item.id}`);
-                const costSpan = document.getElementById(`cost-${item.id}`);
-                const countSpan = document.getElementById(`count-${item.id}`);
-
                 if(box) {
-                    // Update Text
-                    costSpan.innerText = item.cost.toLocaleString();
-                    countSpan.innerText = `(${item.count})`;
+                    document.getElementById(`cost-${item.id}`).innerText = item.cost.toLocaleString();
+                    document.getElementById(`count-${item.id}`).innerText = item.count;
+                    if (game.score >= item.cost) box.classList.remove('disabled');
+                    else box.classList.add('disabled');
+                }
+            });
 
-                    // Update Disabled State
-                    if (game.score >= item.cost) {
-                        box.classList.remove('disabled');
-                    } else {
-                        box.classList.add('disabled');
+            // Check Achievements
+            game.achievements.forEach(ach => {
+                if(!ach.earned) {
+                    let unlock = false;
+                    if(typeof ach.req === 'number' && game.score >= ach.req) unlock = true;
+                    if(typeof ach.req === 'string' && ach.req.startsWith('item_')) {
+                        let idx = parseInt(ach.req.split('_')[1]);
+                        if(game.items[idx].count > 0) unlock = true;
+                    }
+                    
+                    if(unlock) {
+                        ach.earned = true;
+                        const b = document.getElementById(`badge-${ach.id}`);
+                        b.className = "badge unlocked";
+                        b.innerText = `🏆 ${ach.name}`;
+                        spawnFloatingText(window.innerWidth/2, window.innerHeight/2, "TROPHY UNLOCKED!", "gold");
                     }
                 }
             });
         }
 
-        function clickHeart() { 
+        // --- GAME MECHANICS ---
+        function clickHeart(event) { 
             game.score += game.clickPower; 
-            updateShopUI(); // Update UI immediately
+            spawnFloatingText(event.clientX, event.clientY, `+${game.clickPower}`);
+            updateUI(); 
         }
-        
+
         function buyItem(id) {
             const item = game.items[id];
-            // Check if affordable
             if(game.score >= item.cost) {
                 game.score -= item.cost; 
                 item.count++; 
                 item.cost = Math.ceil(item.cost * 1.5);
-                
-                // Apply Boosts
                 if(item.clickBoost > 0) game.clickPower += item.clickBoost;
                 if(item.rate > 0) game.gps += item.rate;
-                
-                localStorage.setItem('gattuGameData', JSON.stringify(game));
-                updateShopUI(); // Update UI immediately
+                updateUI();
             }
         }
 
-        // Run Init ONCE on load
-        initShop();
+        function spawnFloatingText(x, y, text, color="#d81b60") {
+            const el = document.createElement('div');
+            el.className = 'floating-text';
+            el.innerText = text;
+            el.style.left = `${x}px`;
+            el.style.top = `${y}px`;
+            el.style.color = color;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        }
 
-        // Game Loop (Updates Score & UI)
-        setInterval(() => { 
-            if(game.gps > 0) { 
-                game.score += (game.gps / 10); 
-                updateShopUI(); // Smooth updates
-            } 
-        }, 100);
+        // GOLDEN HEART EVENT
+        function spawnGoldenHeart() {
+            const heart = document.getElementById('golden-heart');
+            const area = document.getElementById('game-area');
+            const rect = area.getBoundingClientRect();
+            
+            const randomX = Math.random() * (rect.width - 60);
+            const randomY = Math.random() * (rect.height - 60);
+            
+            heart.style.left = randomX + 'px';
+            heart.style.top = randomY + 'px';
+            heart.style.display = 'block';
+            
+            // Disappear after 3 seconds if not clicked
+            setTimeout(() => { heart.style.display = 'none'; }, 3000);
+        }
 
-        // Auto Save
+        function clickGoldenHeart(e) {
+            e.stopPropagation();
+            document.getElementById('golden-heart').style.display = 'none';
+            const bonus = game.clickPower * 500;
+            game.score += bonus;
+            spawnFloatingText(e.clientX, e.clientY, `+${bonus} GOLD!`, "gold");
+            updateUI();
+        }
+
+        // --- EMAIL ---
+        function sendLove() {
+            const btn = document.getElementById('love-btn');
+            btn.disabled = true; btn.innerText = "Sending...";
+            emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, {
+                to_name: 'Gattu', message: 'Love sent from the fan page!'
+            }, EMAIL_PUBLIC_KEY).then(() => {
+                btn.innerText = "Sent! ❤️";
+            }, () => {
+                btn.disabled = false; btn.innerText = "Try Again";
+            });
+        }
+
+        // --- LOOPS ---
+        initUI();
+        setInterval(() => { if(game.gps > 0) { game.score += (game.gps / 10); updateUI(); } }, 100);
         setInterval(() => { localStorage.setItem('gattuGameData', JSON.stringify(game)); }, 5000);
+        // Golden heart chance every 10 seconds
+        setInterval(() => { if(Math.random() > 0.7) spawnGoldenHeart(); }, 10000);
 
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp } 
+        import { getFirestore, collection, doc, setDoc, getDocs, query, orderBy, limit, serverTimestamp } 
         from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -365,28 +391,38 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        let lastUpload = 0;
 
-        // Make functions globally available to HTML buttons
         window.pushScoreToFirebase = async function() {
-            const name = document.getElementById('gamer-name').value;
+            const name = document.getElementById('gamer-name').value.trim();
             const status = document.getElementById('upload-status');
+            const btn = document.getElementById('upload-btn');
             
-            if(!name) { alert("Please enter your name!"); return; }
+            if(!name) { alert("Enter a name!"); return; }
+            if (Date.now() - lastUpload < 30000) { status.innerText = "⚠️ Wait 30s before updating."; return; }
+
             localStorage.setItem('gattuUserName', name);
-            
-            status.innerText = "Uploading...";
+            status.innerText = "Connecting...";
+            btn.disabled = true;
             
             try {
-                await addDoc(collection(db, "leaderboard"), {
+                // HERE IS THE ANTI-SPAM LOGIC:
+                // We use 'deviceID' (generated at top of script) as the DB Key.
+                // This means even if you change your Name, you update the SAME database row.
+                await setDoc(doc(db, "leaderboard", deviceID), {
                     name: name,
                     score: Math.floor(game.score),
                     timestamp: serverTimestamp()
                 });
-                status.innerText = "✅ Success! Board updating...";
+                
+                status.innerText = "✅ Rank Updated!";
+                lastUpload = Date.now();
                 window.fetchLeaderboard();
+                setTimeout(() => { btn.disabled = false; }, 3000);
             } catch (error) {
-                console.error("Error:", error);
-                status.innerText = "❌ Error: " + error.message;
+                console.error(error);
+                status.innerText = "❌ Error. (Is Test Mode On?)";
+                btn.disabled = false;
             }
         }
 
@@ -395,20 +431,16 @@
             try {
                 const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(10));
                 const querySnapshot = await getDocs(q);
-                
                 tbody.innerHTML = "";
                 let rank = 1;
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    tbody.innerHTML += `<tr><td>#${rank++}</td><td>${data.name}</td><td>${data.score.toLocaleString()}</td></tr>`;
+                    let icon = rank <= 3 ? ["🥇","🥈","🥉"][rank-1] : `#${rank}`;
+                    tbody.innerHTML += `<tr><td>${icon}</td><td>${data.name}</td><td>${data.score.toLocaleString()}</td></tr>`;
+                    rank++;
                 });
-            } catch (error) {
-                console.error("Error:", error);
-                tbody.innerHTML = `<tr><td colspan="3">Loading failed.</td></tr>`;
-            }
+            } catch (error) { tbody.innerHTML = `<tr><td colspan="3">Loading...</td></tr>`; }
         }
-        
-        // Initial load
         window.fetchLeaderboard();
     </script>
 
