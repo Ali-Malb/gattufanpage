@@ -3,161 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gattu Fan Page</title>
+    <title>Gattu's Global Fan Page</title>
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec; /* Light pink */
-            color: #333;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        header {
-            background-color: #e91e63; /* Deep Pink */
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .img-placeholder {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            margin: 20px 0;
-            border: 5px solid white;
-        }
-
-        .love-section {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            margin: 30px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .love-btn {
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            font-size: 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.2s;
-            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
-        }
-
-        .love-btn:hover { background-color: #d81b60; transform: scale(1.05); }
-        .love-btn:active { transform: scale(0.95); }
+        /* --- STYLES --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; color: #333; margin: 0; padding: 0; user-select: none; }
+        .nav-bar { background-color: #e91e63; padding: 15px; display: flex; justify-content: center; gap: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .nav-btn { background: transparent; border: 2px solid rgba(255,255,255,0.5); color: white; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); }
+        .nav-btn.active { background: white; color: #e91e63; border-color: white; }
         
-        .love-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        #counter {
-            font-size: 20px;
-            margin-top: 15px;
-            color: #880e4f;
-            font-weight: bold;
-        }
-
-        footer { margin-top: 50px; font-size: 0.9em; color: #777; padding-bottom: 20px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; display: none; }
+        .container.active-view { display: block; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; }
+        
+        /* Game Styles */
+        .clicker-btn { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #ff80ab 0%, #f50057 100%); border: 5px solid white; box-shadow: 0 10px 20px rgba(233, 30, 99, 0.4); color: white; font-size: 40px; cursor: pointer; transition: transform 0.1s; }
+        .clicker-btn:active { transform: scale(0.9); }
+        
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .shop-item { background: #fff0f5; padding: 15px; border-radius: 15px; border: 1px solid #ffc1e3; cursor: pointer; transition: transform 0.1s; }
+        .shop-item:hover { transform: translateY(-3px); border-color: #f50057; }
+        .shop-item.disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(1); }
+        
+        /* Leaderboard Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: #fce4ec; color: #880e4f; padding: 10px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        
+        /* Inputs */
+        input, textarea { width: 70%; padding: 10px; margin: 10px 0; border: 2px solid #ffc1e3; border-radius: 10px; font-family: inherit; }
+        .action-btn { background-color: #ff4081; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .action-btn:hover { background-color: #d81b60; }
+        .action-btn:disabled { background-color: #ccc; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🌟 The Official Gattu Fan Club 🌟</h1>
-    </header>
-
-    <div class="container">
-        
-        <section>
-            <h2>Welcome to the Gattu Appreciation Zone!</h2>
-            <p>Dedicated to the one and only Gattu.</p>
-            
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6RZlboeF2Q-nIeNB-U1s88DFOmsVlCo3W0w&s" 
-                 alt="A photo of Gattu" 
-                 class="img-placeholder">
-        </section>
-
-        <section class="love-section">
-            <h3>Show Your Support</h3>
-            <p>Click the button below to send virtual love to Gattu!</p>
-            
-            <button class="love-btn" onclick="sendLove()">
-                ❤️ Send Love
-            </button>
-            
-            <div id="counter">0 Loves Sent Today</div>
-        </section>
-
-        <section>
-            <h3>Moments of Greatness</h3>
-            <p>Here is Gattu doing what Gattu does best.</p>
-
-            <img src="https://pbs.twimg.com/media/E-qWuqZUcAMR5jK.jpg" 
-                 alt="Another photo of Gattu" 
-                 class="img-placeholder">
-        </section>
-
+    <div class="nav-bar">
+        <button class="nav-btn active" onclick="switchTab('letter')">💌 Send Letter</button>
+        <button class="nav-btn" onclick="switchTab('game')">🎮 Global Clicker</button>
     </div>
 
-    <footer>
-        <p>Made with ❤️ for Gattu</p>
-    </footer>
+    <div id="view-letter" class="container active-view">
+        <div class="card">
+            <h2>Send a Love Letter to Gattu</h2>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6RZlboeF2Q-nIeNB-U1s88DFOmsVlCo3W0w&s" style="width: 200px; border-radius: 10px; margin-bottom: 20px;">
+            <p>Write something nice below. Gattu will receive it via email!</p>
+            <input type="text" id="letter-name" placeholder="Your Name">
+            <textarea id="letter-msg" rows="4" placeholder="Your Message..."></textarea>
+            <br>
+            <button class="action-btn" id="letter-btn" onclick="sendLetter()">Send Letter 🚀</button>
+            <p id="letter-status" style="margin-top: 10px; color: #666;"></p>
+        </div>
+    </div>
+
+    <div id="view-game" class="container">
+        <div class="card">
+            <h2 style="margin:0;">❤️ <span id="score">0</span></h2>
+            <div style="font-size: 0.8em; color: #888; margin-bottom: 20px;">(<span id="gps">0</span> / sec)</div>
+            
+            <button class="clicker-btn" onclick="clickHeart()">❤️</button>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #fff8fb; border-radius: 10px;">
+                <h4>🌍 Global Ranking</h4>
+                <p style="font-size: 0.8em; color: #666;">Click "Upload" to show your score to the world!</p>
+                <input type="text" id="gamer-name" placeholder="Enter Name">
+                <br>
+                <button class="action-btn" onclick="window.pushScoreToFirebase()"> Upload Score </button>
+                <p id="upload-status" style="font-size: 12px; color: #666; margin-top:5px;"></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🛒 Item Shop</h3>
+            <div id="shop" class="shop-grid"></div>
+        </div>
+
+        <div class="card">
+            <h3>🏆 World Leaderboard</h3>
+            <button onclick="window.fetchLeaderboard()" style="font-size: 12px; cursor: pointer; background:none; border:none; color:blue; text-decoration:underline;">Refresh Board</button>
+            <table>
+                <thead><tr><th>Rank</th><th>Name</th><th>Score</th></tr></thead>
+                <tbody id="leaderboard-body"><tr><td colspan="3">Loading World Scores...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
-        let loveCount = 0;
+        // --- EMAIL JS KEYS ---
+        const EMAIL_SERVICE_ID = 'service_11ijhua';
+        const EMAIL_TEMPLATE_ID = 'template_mwe3jti';
+        const EMAIL_PUBLIC_KEY = 'iwl1W3R_eIaaqB7RR';
 
-        function sendLove() {
-            const btn = document.querySelector('.love-btn');
-            const counterElement = document.getElementById("counter");
-
-            // 1. Update the screen immediately
-            loveCount++;
-            counterElement.innerText = "❤️ Sending love to Gattu...";
-            btn.disabled = true; 
-            btn.innerText = "Sending...";
-
-            // 2. Prepare the email data
-            var templateParams = {
-                to_name: 'Gattu',
-                message: 'Someone just clicked the Love button on your fan page!'
-            };
+        // --- NAVIGATION ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-view'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${tabName}`).classList.add('active-view');
+            const btnIndex = tabName === 'letter' ? 0 : 1;
+            document.querySelectorAll('.nav-btn')[btnIndex].classList.add('active');
             
-            // 3. Send the email using FIXED Template ID
-            // I changed 'ebdj3hw' to 'template_ebdj3hw'
-            emailjs.send('service_11ijhua', 'template_mwe3jti', templateParams, 'iwl1W3R_eIaaqB7RR')
-                .then(function(response) {
-                    // Success
-                    console.log('SUCCESS!', response.status, response.text);
-                    counterElement.innerText = loveCount + " Love Sent! (Email Delivered)";
-                    btn.innerText = "Love Sent! ❤️";
-                }, function(error) {
-                    // Failure
-                    console.error('FAILED...', error);
-                    counterElement.innerText = "Failed: " + JSON.stringify(error);
-                    btn.disabled = false;
-                    btn.innerText = "Try Again";
-                });
+            if(tabName === 'game' && window.fetchLeaderboard) window.fetchLeaderboard();
         }
-    </script>
 
-</body>
-</html>
+        // --- EMAIL LOGIC ---
+        function sendLetter() {
+            const name = document.getElementById('letter-name').value || "Anonymous";
+            const msg = document.getElementById('letter-msg').value;
+            const btn = document.getElementById('letter-btn');
+            const status = document.getElementById('letter-status');
+
+            if(!msg) { alert("Please write a message!"); return; }
+            btn.disabled = true; status.innerText = "Sending...";
+
+            emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, {
+                to_name: 'Gattu',
+                message: `LETTER FROM ${name}: ${msg}`
+            }, EMAIL_PUBLIC_KEY).then(() => {
+                status.innerText = "✅ Sent successfully!";
+                btn.innerText = "Sent!";
+            }, (err) => {
+                status.innerText = "❌ Failed.";
+                btn.disabled = false;
+            });
+        }
+
+        // --- CLICKER GAME LOGIC ---
+        let game = { score: 0, gps: 0, clickPower: 1, items: [
+            { id: 0, name: "Gattu's Vocab", cost: 50, rate: 0, clickBoost: 5, desc: "+5 per click", count: 0 },
+            { id: 1, name: "Gattu's Notebook", cost: 100, rate: 2, clickBoost: 0,
