@@ -126,24 +126,70 @@
         <p>Made with ❤️ for Gattu</p>
     </footer>
 
-    <script>
-        // Simple script to make the button work visually
-        let loveCount = 0;
-        
-        function sendLove() {
-            loveCount++;
-            const counterElement = document.getElementById("counter");
-            
-            if(loveCount === 1) {
-                counterElement.innerText = loveCount + " Love Sent!";
-            } else {
-                counterElement.innerText = loveCount + " Loves Sent!";
-            }
-
-            // Optional: Alert the user
-            // alert("Thanks for sending love to Gattu!");
-        }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gattu Fan Page</title>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <script type="text/javascript">
+       (function(){
+          // 2. PASTE YOUR PUBLIC KEY HERE
+          emailjs.init("iwl1W3R_eIaaqB7RR");
+       })();
     </script>
 
+    <style>
+        /* ... Keep your existing styles here ... */
+        
+        /* Add this to make the button look disabled after clicking */
+        .love-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let loveCount = 0;
+
+        function sendLove() {
+            const btn = document.querySelector('.love-btn');
+            const counterElement = document.getElementById("counter");
+
+            // 1. Update the visual counter immediately so it feels fast
+            loveCount++;
+            counterElement.innerText = "❤️ Sending love to Gattu...";
+            
+            // 2. Disable button immediately to prevent spamming Gattu's inbox!
+            btn.disabled = true; 
+            btn.innerText = "Sending...";
+
+            // 3. Prepare the data to send
+            var templateParams = {
+                to_name: 'Gattu',
+                message: 'Someone just clicked the Love button on your fan page!'
+            };
+            
+            // 4. Send the email using EmailJS
+            // REPLACE THESE WITH YOUR ACTUAL IDs
+            emailjs.send('service_11ijhua', 'ebdj3hw', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    counterElement.innerText = loveCount + " Love Sent! (Email Delivered)";
+                    btn.innerText = "Love Sent! ❤️";
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    counterElement.innerText = "Counter updated, but email failed.";
+                    btn.disabled = false; // Re-enable if it failed
+                    btn.innerText = "Try Again";
+                });
+        }
+    </script>
+</body>
 </body>
 </html>
