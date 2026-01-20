@@ -152,45 +152,165 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gattu Fan Page</title>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fce4ec; /* Light pink */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
+        header {
+            background-color: #e91e63; /* Deep Pink */
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: 20px 0;
+            border: 5px solid white;
+        }
+
+        .love-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .love-btn {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        .love-btn:hover { background-color: #d81b60; transform: scale(1.05); }
+        .love-btn:active { transform: scale(0.95); }
+        
+        .love-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #counter {
+            font-size: 20px;
+            margin-top: 15px;
+            color: #880e4f;
+            font-weight: bold;
+        }
+
+        footer { margin-top: 50px; font-size: 0.9em; color: #777; padding-bottom: 20px; }
+    </style>
+</head>
 <body>
-<script>
+
+    <header>
+        <h1>🌟 The Official Gattu Fan Club 🌟</h1>
+    </header>
+
+    <div class="container">
+        
+        <section>
+            <h2>Welcome to the Gattu Appreciation Zone!</h2>
+            <p>Dedicated to the one and only Gattu.</p>
+            
+            <img src="https://via.placeholder.com/400x300?text=Gattu+Image+1" 
+                 alt="A photo of Gattu" 
+                 class="img-placeholder">
+        </section>
+
+        <section class="love-section">
+            <h3>Show Your Support</h3>
+            <p>Click the button below to send virtual love to Gattu!</p>
+            
+            <button class="love-btn" onclick="sendLove()">
+                ❤️ Send Love
+            </button>
+            
+            <div id="counter">0 Loves Sent Today</div>
+        </section>
+
+        <section>
+            <h3>Moments of Greatness</h3>
+            <p>Here is Gattu doing what Gattu does best.</p>
+
+            <img src="https://pbs.twimg.com/media/E-qWuqZUcAMR5jK.jpg" 
+                 alt="Another photo of Gattu" 
+                 class="img-placeholder">
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Made with ❤️ for Gattu</p>
+    </footer>
+
+    <script>
         let loveCount = 0;
 
         function sendLove() {
             const btn = document.querySelector('.love-btn');
             const counterElement = document.getElementById("counter");
 
-            // 1. UI Updates
+            // 1. Update the screen immediately
             loveCount++;
-            counterElement.innerText = "❤️ Sending...";
+            counterElement.innerText = "❤️ Sending love to Gattu...";
             btn.disabled = true; 
             btn.innerText = "Sending...";
 
-            // 2. Data to send
+            // 2. Prepare the email data
             var templateParams = {
                 to_name: 'Gattu',
-                message: 'Love sent from the fan page!'
+                message: 'Someone just clicked the Love button on your fan page!'
             };
-
-            // 3. SEND EMAIL (Fill in ALL 3 items below)
-            // Format: emailjs.send(service_11ijhua, ebdj3hw, PARAMS, iwl1W3R_eIaaqB7RR)
             
+            // 3. Send the email using YOUR keys
             emailjs.send('service_11ijhua', 'ebdj3hw', templateParams, 'iwl1W3R_eIaaqB7RR')
                 .then(function(response) {
-                    // Success!
+                    // Success
                     console.log('SUCCESS!', response.status, response.text);
                     counterElement.innerText = loveCount + " Love Sent! (Email Delivered)";
                     btn.innerText = "Love Sent! ❤️";
                 }, function(error) {
-                    // Fail!
+                    // Failure
                     console.error('FAILED...', error);
-                    // This will print the specific reason on your screen:
-                    counterElement.innerText = "Failed: " + error.text; 
+                    counterElement.innerText = "Failed: " + JSON.stringify(error);
                     btn.disabled = false;
                     btn.innerText = "Try Again";
                 });
         }
     </script>
+
 </body>
 </html>
