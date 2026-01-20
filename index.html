@@ -107,12 +107,24 @@
             background: #fff0f5; 
             padding: 15px; 
             border-radius: 15px; 
-            border: 1px solid #ffc1e3; 
+            border: 2px solid #ffc1e3; 
             cursor: pointer; 
-            transition: transform 0.1s; 
+            transition: transform 0.1s, border-color 0.1s; 
+            /* Fix for spasing: Enforce height stability */
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .shop-item:hover { transform: translateY(-3px); border-color: #f50057; }
-        .shop-item.disabled { opacity: 0.6; cursor: not-allowed; filter: grayscale(1); }
+        
+        /* Disabled state */
+        .shop-item.disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed; 
+            filter: grayscale(1); 
+            transform: none !important; /* Stop movement if disabled */
+        }
 
         /* GLOBAL RANKING BOX */
         .upload-box {
@@ -210,7 +222,7 @@
         const EMAIL_TEMPLATE_ID = 'template_mwe3jti';
         const EMAIL_PUBLIC_KEY = 'iwl1W3R_eIaaqB7RR';
 
-        // --- 1. SEND LOVE FUNCTION (FIXED EMAIL) ---
+        // --- 1. SEND LOVE FUNCTION ---
         function sendLove() {
             const btn = document.getElementById('love-btn');
             const status = document.getElementById('love-status');
@@ -219,7 +231,6 @@
             status.innerText = "❤️ Sending...";
             btn.innerText = "Sending...";
 
-            // Sending a generic "Love Sent" message
             emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, {
                 to_name: 'Gattu',
                 message: 'Someone clicked the Send Love button on your fan page!'
@@ -227,7 +238,8 @@
                 status.innerText = "✅ Love Sent to Gattu via Email!";
                 btn.innerText = "Sent! ❤️";
             }, (err) => {
-                status.innerText = "❌ Email failed, but the love is real!";
+                status.innerText = "❌ Email failed (Quota exceeded or Network error)";
+                console.error(err);
                 btn.disabled = false;
                 btn.innerText = "Try Again";
             });
@@ -246,36 +258,95 @@
         if(localStorage.getItem('gattuGameData')) game = JSON.parse(localStorage.getItem('gattuGameData'));
         if(localStorage.getItem('gattuUserName')) document.getElementById('gamer-name').value = localStorage.getItem('gattuUserName');
 
-        function renderShop() {
+        // --- FIX: INITIALIZE SHOP (Run ONCE) ---
+        function initShop() {
             const shopDiv = document.getElementById('shop');
-            shopDiv.innerHTML = "";
+            shopDiv.innerHTML = ""; // Clear existing
+            
             game.items.forEach(item => {
+                // Create the DIV
                 const el = document.createElement('div');
-                el.className = `shop-item ${game.score < item.cost ? 'disabled' : ''}`;
+                el.className = 'shop-item';
+                el.id = `item-box-${item.id}`; // Give it a stable ID
                 el.onclick = () => buyItem(item.id);
-                el.innerHTML = `<strong>${item.name}</strong> (${item.count})<br><span style="color:#d81b60">💰 ${item.cost.toLocaleString()}</span><br><small>${item.desc}</small>`;
+                
+                // Set the internal HTML
+                el.innerHTML = `
+                    <strong id="name-${item.id}">${item.name}</strong> 
+                    <span id="count-${item.id}">(${item.count})</span>
+                    <br>
+                    <span style="color:#d81b60">💰 <span id="cost-${item.id}">${item.cost.toLocaleString()}</span></span>
+                    <br>
+                    <small>${item.desc}</small>
+                `;
                 shopDiv.appendChild(el);
             });
-            document.getElementById('score').innerText = Math.floor(game.score).toLocaleString();
-            document.getElementById('gps').innerText = game.gps;
+            updateShopUI(); // Set initial disabled states
         }
 
-        function clickHeart() { game.score += game.clickPower; renderShop(); }
+        // --- FIX: UPDATE SHOP (Run OFTEN) ---
+        function updateShopUI() {
+            // Update Score Text
+            document.getElementById('score').innerText = Math.floor(game.score).toLocaleString();
+            document.getElementById('gps').innerText = game.gps;
+
+            // Update Buttons (Enable/Disable/Text)
+            game.items.forEach(item => {
+                const box = document.getElementById(`item-box-${item.id}`);
+                const costSpan = document.getElementById(`cost-${item.id}`);
+                const countSpan = document.getElementById(`count-${item.id}`);
+
+                if(box) {
+                    // Update Text
+                    costSpan.innerText = item.cost.toLocaleString();
+                    countSpan.innerText = `(${item.count})`;
+
+                    // Update Disabled State
+                    if (game.score >= item.cost) {
+                        box.classList.remove('disabled');
+                    } else {
+                        box.classList.add('disabled');
+                    }
+                }
+            });
+        }
+
+        function clickHeart() { 
+            game.score += game.clickPower; 
+            updateShopUI(); // Update UI immediately
+        }
         
         function buyItem(id) {
             const item = game.items[id];
+            // Check if affordable
             if(game.score >= item.cost) {
-                game.score -= item.cost; item.count++; item.cost = Math.ceil(item.cost * 1.5);
+                game.score -= item.cost; 
+                item.count++; 
+                item.cost = Math.ceil(item.cost * 1.5);
+                
+                // Apply Boosts
                 if(item.clickBoost > 0) game.clickPower += item.clickBoost;
                 if(item.rate > 0) game.gps += item.rate;
+                
                 localStorage.setItem('gattuGameData', JSON.stringify(game));
-                renderShop();
+                updateShopUI(); // Update UI immediately
             }
         }
 
-        setInterval(() => { if(game.gps > 0) { game.score += (game.gps / 10); renderShop(); } }, 100);
+        // Run Init ONCE on load
+        initShop();
+
+        // Game Loop (Updates Score & UI)
+        setInterval(() => { 
+            if(game.gps > 0) { 
+                game.score += (game.gps / 10); 
+                updateShopUI(); // Smooth updates
+            } 
+        }, 100);
+
+        // Auto Save
         setInterval(() => { localStorage.setItem('gattuGameData', JSON.stringify(game)); }, 5000);
-        renderShop();
+
     </script>
 
     <script type="module">
