@@ -154,42 +154,43 @@
 </head>
 
 <body>
-    <script>
+<script>
         let loveCount = 0;
 
         function sendLove() {
             const btn = document.querySelector('.love-btn');
             const counterElement = document.getElementById("counter");
 
-            // 1. Update the visual counter immediately so it feels fast
+            // 1. UI Updates
             loveCount++;
-            counterElement.innerText = "❤️ Sending love to Gattu...";
-            
-            // 2. Disable button immediately to prevent spamming Gattu's inbox!
+            counterElement.innerText = "❤️ Sending...";
             btn.disabled = true; 
             btn.innerText = "Sending...";
 
-            // 3. Prepare the data to send
+            // 2. Data to send
             var templateParams = {
                 to_name: 'Gattu',
-                message: 'Someone just clicked the Love button on your fan page!'
+                message: 'Love sent from the fan page!'
             };
+
+            // 3. SEND EMAIL (Fill in ALL 3 items below)
+            // Format: emailjs.send(service_11ijhua, ebdj3hw, PARAMS, iwl1W3R_eIaaqB7RR)
             
-            // 4. Send the email using EmailJS
-            // REPLACE THESE WITH YOUR ACTUAL IDs
-            emailjs.send('service_11ijhua', 'ebdj3hw', templateParams)
+            emailjs.send('service_11ijhua', 'ebdj3hw', templateParams, 'iwl1W3R_eIaaqB7RR')
                 .then(function(response) {
+                    // Success!
                     console.log('SUCCESS!', response.status, response.text);
                     counterElement.innerText = loveCount + " Love Sent! (Email Delivered)";
                     btn.innerText = "Love Sent! ❤️";
                 }, function(error) {
-                    console.log('FAILED...', error);
-                    counterElement.innerText = "Counter updated, but email failed.";
-                    btn.disabled = false; // Re-enable if it failed
+                    // Fail!
+                    console.error('FAILED...', error);
+                    // This will print the specific reason on your screen:
+                    counterElement.innerText = "Failed: " + error.text; 
+                    btn.disabled = false;
                     btn.innerText = "Try Again";
                 });
         }
     </script>
-</body>
 </body>
 </html>
